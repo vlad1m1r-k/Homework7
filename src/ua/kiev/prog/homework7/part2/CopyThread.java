@@ -9,21 +9,17 @@ public class CopyThread implements Runnable {
     private long from;
     private long step;
 
-    public CopyThread(RandomAccessFile source, RandomAccessFile target, long from, long to) {
+    public CopyThread(RandomAccessFile source, RandomAccessFile target, long from, long step) {
         this.source = source;
         this.target = target;
         this.from = from;
-        this.step = to;
+        this.step = step;
     }
 
     @Override
     public void run() {
-        byte[] data = new byte[(int)step];
         try {
-            source.seek(from);
-            source.read(data);
-            target.seek(from);
-            target.write(data);
+            CopyFile.write(target, from, CopyFile.read(source, from, step));
         } catch (IOException e) {
             e.printStackTrace();
         }
