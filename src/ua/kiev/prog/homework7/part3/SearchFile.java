@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class SearchFile {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
@@ -22,14 +21,14 @@ public class SearchFile {
                 ExecutorService eService = Executors.newFixedThreadPool(30);
                 List<Future<?>> list = new ArrayList<>();
                 list.add(eService.submit(new SearchThread(eService, startDir, fileName, list)));
-                for (Future<?> future : list) {
-                        future.get();
-                }
+//                for (Future<?> future : list) {
+//                        future.get();
+//                }
                 boolean finish = true;
                 while (finish) {
                     for (Future<?> future : list) {
                         if (!future.isDone()) {
-                            future.get();
+                            //future.get();
                             break;
                         }
                         finish = false;
