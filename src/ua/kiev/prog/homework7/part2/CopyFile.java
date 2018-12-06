@@ -43,7 +43,7 @@ public class CopyFile {
 
     private static void startCopy(File sourceFile, File targetFile) throws ExecutionException, InterruptedException {
         long length = sourceFile.length();
-        long step = 1024;
+        long step = 10 * 1024;
         ExecutorService eService = Executors.newFixedThreadPool(10);
         List<Future<?>> taskList = new ArrayList<>();
         try (RandomAccessFile randomSource = new RandomAccessFile(sourceFile, "r");
