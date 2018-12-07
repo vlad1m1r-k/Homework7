@@ -1,15 +1,12 @@
 package ua.kiev.prog.homework7.part3;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class SearchFile {
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
         if (args.length < 2) {
             System.out.println("Usage: SearchFile StartDirectory FileName");
         } else {
@@ -19,21 +16,10 @@ public class SearchFile {
                 System.out.println("Wrong start point.");
             } else {
                 ExecutorService eService = Executors.newFixedThreadPool(30);
-                List<Future<?>> list = new ArrayList<>();
-                list.add(eService.submit(new SearchThread(eService, startDir, fileName, list)));
-//                for (Future<?> future : list) {
-//                        future.get();
-//                }
-                boolean finish = true;
-                while (finish) {
-                    for (Future<?> future : list) {
-                        if (!future.isDone()) {
-                            //future.get();
-                            break;
-                        }
-                        finish = false;
-                    }
-                }
+                Semaphore semaphore = new Semaphore();
+                semaphore.addThread();
+                eService.submit(new SearchThread(eService, startDir, fileName, semaphore));
+                semaphore.waitThreads();
                 eService.shutdown();
             }
         }
