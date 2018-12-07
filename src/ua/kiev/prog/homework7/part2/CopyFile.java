@@ -38,7 +38,6 @@ public class CopyFile {
         long step = 10 * 1024 * 1024;
         ExecutorService eService = Executors.newFixedThreadPool(10);
         List<Future<?>> taskList = new ArrayList<>();
-        System.out.println("l/s = " + (int) (length / step) + " " + length + "/" + step);
         Progress progress = new Progress(length / step);
         try (FileChannel sourceFileChannel = (FileChannel) Files.newByteChannel(sourceFile.toPath(), StandardOpenOption.READ);
              FileChannel targetFileChannel = (FileChannel) Files.newByteChannel(targetFile.toPath(), EnumSet.of(StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.READ))) {
